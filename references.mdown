@@ -1,0 +1,10 @@
+- [How to order the (factor) variables in ggplot2](https://kohske.wordpress.com/2010/12/29/faq-how-to-order-the-factor-variables-in-ggplot2/)
+- [Log-transformation and its implications for data analysis](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/)
+
+Variable transformation 
+
+[Forum_search](https://discussions.udacity.com/search?q=log%20transformation&expanded=true)
+[Wiki for Data transformation](https://en.wikipedia.org/wiki/Data_transformation_(statistics)#Reasons_for_transforming_data)
+[Stack Exchange Stats, When (and why) should you take the log of a distribution (of numbers)?](http://stats.stackexchange.com/questions/18844/when-and-why-should-you-take-the-log-of-a-distribution-of-numbers)
+
+[ggplot: arranging boxplots of multiple y-variables for each group of a continuous x](http://stackoverflow.com/questions/21388845/ggplot-arranging-boxplots-of-multiple-y-variables-for-each-group-of-a-continuou)

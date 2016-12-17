@@ -1,0 +1,570 @@
+---
+title: "Direct Marketing campaign analysis"
+author: "By Verra Lucas"
+date: "December 13, 2016"
+output: html_document
+---
+
+
+```{r include=F}
+knitr::opts_chunk$set(echo=FALSE,fig.width=8, fig.height=4,fig.align='center',message=FALSE, warning=FALSE)
+```
+
+Explarotory Data Analysis on direct marketing campaign from Portuguese Bank 
+========================================================
+
+### Abstract : 
+
+This exercice reflects what we have learned on Udacity's Data Analyst NanoDegree, Exploratory Data analysis lesson. 
+The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. The classification goal is to predict if the client will subscribe a term deposit (variable y)
+
+The data set is provided by the [UC Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/datasets/Bank+Marketing) [Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+library(ggplot2)
+library(knitr)
+library(gridExtra)
+library(GGally)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Load the Data
+setwd('/Users/lucas/Documents/learning_online/Udacity/DAND/P4 Exploratory Data Analysis (EDA) /P4/Bank/bank-additional')
+data_small <- read.csv('bank-additional.csv', sep=";")
+data_big <- read.csv('bank-additional-full.csv',sep=";")
+```
+
+### Univariate Plots Section
+
+In this section, we will will explore many variables and their distributions. The objective is to have a general understanding of the data presented in the dataset.  
+
+
+#### Length & Structure
+
+```{r}
+length(data_big$age)
+```
+The data is divided in 21 variables
+
+```{r}
+colnames(data_big)
+```
+
+>   Input variables:
+># bank client data:  
+> 1 - age (numeric)  
+> 2 - job : type of job (categorical: "admin.","blue-collar","entrepreneur","housemaid","management","retired","self-employed","services","student","technician","unemployed","unknown")
+> 3 - marital : marital status (categorical: "divorced","married","single","unknown"; note: "divorced" means divorced or widowed)  
+> 4 - education (categorical: "basic.4y","basic.6y","basic.9y","high.school","illiterate","professional.course","university.degree","unknown")  
+   > 5 - default: has credit in default? (categorical: "no","yes","unknown")    
+   6 - housing: has housing loan? (categorical: "no","yes","unknown")    
+   7 - loan: has personal loan? (categorical: "no","yes","unknown")  
+   # related with the last contact of the current campaign:  
+   8 - contact: contact communication type (categorical: "cellular","telephone")   
+   9 - month: last contact month of year (categorical: "jan", "feb", "mar", ..., "nov", "dec")  
+  10 - day_of_week: last contact day of the week (categorical: "mon","tue","wed","thu","fri")  
+  11 - duration: last contact duration, in seconds (numeric). Important note:  this attribute highly affects the output target (e.g., if duration=0 then y="no"). Yet, the duration is not known before a call is performed. Also, after the end of the call y is obviously known. Thus, this input should only be included for benchmark purposes and should be discarded if the intention is to have a realistic predictive model.  
+   # other attributes:     
+  12 - campaign: number of contacts performed during this campaign and for this client (numeric, includes last contact)  
+  13 - pdays: number of days that passed by after the client was last contacted from a previous campaign (numeric; 999 means client was not previously contacted)  
+  14 - previous: number of contacts performed before this campaign and for this client (numeric)  
+  15 - poutcome: outcome of the previous marketing campaign (categorical: "failure","nonexistent","success")  
+   # social and economic context attributes  
+  16 - emp.var.rate: employment variation rate - quarterly indicator (numeric)  
+  17 - cons.price.idx: consumer price index - monthly indicator (numeric)       
+  18 - cons.conf.idx: consumer confidence index - monthly indicator (numeric)      
+  19 - euribor3m: euribor 3 month rate - daily indicator (numeric)  
+  20 - nr.employed: number of employees - quarterly indicator (numeric)  
+  Output variable (desired target):  
+  21 - y - has the client subscribed a term deposit? (binary: "yes","no")  
+
+
+Data is grouped in 4 'types of data' :
+
+1. Client Data - Demographic [age - education]
+2. Client Data - Banking [defaut - loan]
+3. Campaign data - [contact - poutcome]
+4. Macro social and economic portuguese context [emp.var.rate - nr.employed]
+
+The last one, named 'y' represent the success/failure of the marketing campaign. 
+
+> "The client has purchased the service marketed"
+
+```{r fig.width=3, fig.height=3,fig.align='center',}
+data_big$y <- ordered(data_big$y, levels = c("yes","no"))
+
+ggplot(aes(x=y),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+```
+
+#### Client Data  
+
+We can quickly see that the Client data aspect of the dataset is predominantly based on factor type of variables, except for the 'age' varible.
+
+For each variable displayed, the count and proportions of the total are represented next to each other. 
+
+ 
+
+```{r}
+p_age = ggplot(aes(x=age),data=data_big) +
+  geom_bar(stat="count") +
+  theme_bw() +
+  coord_cartesian(xlim = c(0,quantile(data_big$age,.99)))
+
+
+p_age_b = ggplot(aes(x=age,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw() +
+  coord_cartesian(xlim = c(0,quantile(data_big$age,.99)))
+
+grid.arrange( p_age,p_age_b, ncol=2)
+```
+
+```{r}
+data_big$marital <- ordered(data_big$marital, levels = c("single","married",'divorced','unknown'))
+
+p_marit = ggplot(aes(x=marital),data=data_big) +
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_marit_b = ggplot(aes(x=marital,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw() 
+
+grid.arrange( p_marit,p_marit_b, ncol=2)
+```
+
+
+
+```{r}
+p_edu = ggplot(aes(x=education),data=data_big) +
+  geom_bar(stat="count") +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle=30,hjust=1))
+
+p_edu_b = ggplot(aes(x=education,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle=30,hjust=1))
+
+grid.arrange( p_edu,p_edu_b, ncol=2)
+```
+
+```{r,fig.height=8}
+data_big$default <- ordered(data_big$default, levels = c("yes","no",'unknown'))
+
+p_default = ggplot(aes(x=default),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_default_b = ggplot(aes(x=default,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+data_big$housing <- ordered(data_big$housing, levels = c("yes","no",'unknown'))
+
+p_housing = ggplot(aes(x=housing),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_housing_b = ggplot(aes(x=housing,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+data_big$loan <- ordered(data_big$loan, levels = c("yes","no",'unknown'))
+
+p_loan = ggplot(aes(x=loan),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_loan_b = ggplot(aes(x=loan,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+
+
+grid.arrange(p_default,p_default_b,p_housing,p_housing_b,p_loan,p_loan_b, ncol=2)
+```
+
+
+#### Campaign Data 
+
+Variables in this section are categorical but also numerical.
+
+
+```{r,fig.height=8}
+p_contact = ggplot(aes(x=contact),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_contact_b = ggplot(aes(x=contact,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+data_big$month <- ordered(data_big$month, levels = c("mar",'apr','may','jun','jul','aug','sep','oct','nov','dic'))
+
+p_month = ggplot(aes(x=month),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_month_b = ggplot(aes(x=month,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+data_big$day_of_week <- ordered(data_big$day_of_week, levels = c("mon",'tue','wed','thu','fri'))
+
+p_day_of_week = ggplot(aes(x=day_of_week),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+p_day_of_week_b = ggplot(aes(x=day_of_week,y=..count../sum(..count..)),data=data_big)+
+  geom_bar(stat="count") +
+  theme_bw()
+
+
+
+grid.arrange(p_contact,p_contact_b,p_month,p_month_b,p_day_of_week,p_day_of_week_b, ncol=2)
+```
+
+The following plot represent the campaign variable, described as  
+
+>number of contacts performed during this campaign and for this client (numeric, includes last contact)
+
+```{r echo=FALSE}
+
+
+ggplot(aes(x=campaign),data= data_big) + 
+  geom_bar() +
+  scale_x_continuous(limits = c(0,20), breaks = seq(0,20,2))+
+  theme_bw()
+
+```
+
+
+
+```{r echo=FALSE}
+
+
+ggplot(aes(x=duration),data= data_big) + 
+  geom_histogram(binwidth = 25) + 
+  coord_cartesian(xlim = c(0,quantile(data_big$duration,.99))) +
+  scale_x_continuous(breaks = seq(0,1600,100)) + 
+  theme_bw()
+
+```
+
+
+Both distribution are heavyly skewed towards the low values
+
+#### Macro social and economic portuguese context data 
+
+The histograms show that the distribution for those variables are not 'conventional' 
+
+```{r echo=FALSE, fig.height=10, message=FALSE, warning=FALSE}
+p_em_rate <- ggplot(aes(x=emp.var.rate),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+p_em_rate_b <- ggplot(aes(x=emp.var.rate,y=..count../sum(..count..)),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+###
+
+p_price_index <- ggplot(aes(x=cons.price.idx),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+p_price_index_b <- ggplot(aes(x=cons.price.idx,y=..count../sum(..count..)),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+###
+
+p_cons_conf <- ggplot(aes(x=cons.conf.idx),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+p_cons_conf_b <- ggplot(aes(x=cons.conf.idx,y=..count../sum(..count..)),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+###
+
+p_euribor3m <- ggplot(aes(x=euribor3m),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+p_euribor3m_b <- ggplot(aes(x=euribor3m,y=..count../sum(..count..)),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+###
+
+p_emplo <- ggplot(aes(x=nr.employed),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+p_emplo_b <- ggplot(aes(x=nr.employed,y=..count../sum(..count..)),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+grid.arrange(p_em_rate,p_em_rate_b,p_price_index,p_price_index_b,p_cons_conf,p_cons_conf_b,p_euribor3m,p_euribor3m_b,p_emplo,p_emplo_b, ncol=2)
+
+```
+
+
+```{r echo=FALSE }
+str(data_big)
+
+summary(data_big)
+```
+
+### What is/are the main feature(s) of interest in your dataset?
+
+The main feature of this dataset is that it clearly represents the information produced during a business process : A direct marketing campaign. Business driven, we can perceived a sucess/failure variable that will be key to anaylse the other variables.   
+
+
+### What other features in the dataset do you think will help support your investigation into your feature(s) of interest?
+
+Besides the sucess/failure variable, we are provided with 3 blocks of data : 
+
+1. Client data
+2. Campaign data
+3. Macro socio-economic data
+
+We will investigate how success variable is related to those blocks, and if one is more significant in the correlation with a sucess event
+
+### Did you create any new variables from existing variables in the dataset?
+
+No. We will discuss this matter on the reflections section. There is no evident new variable to be created exept maybe for an 'ID' type. As we saw on the distribution of the campaign variable , an event (a direct marketing contact) can ve executed on the same client multiple times. As there is no 'ID' variable, we cannot follow chrnonologically on a per client level.
+
+### Of the features you investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?
+
+Yes, as seen previoulsy, the Macro socio-economic block of data has a rather unusual distribution. I did not perform any operation on these variables as I have no experience dealing with this type of data. Nothing seems to point to a corrupted/flawed data input.
+
+Regarding the duration variable, we can apply the log transformation in order to make it as normal as possible.
+Althought after lots of reading, i still do not understand why i do this
+
+```{r echo=FALSE}
+
+
+ggplot(aes(x=log(duration)),data= data_big) + 
+  geom_histogram() + 
+  theme_bw()
+
+```
+
+# Bivariate Plots Section 
+
+Now that we have a good understanding of each variable of its own, lets start building relationships. Our focus of investigation will trying to understand what variables are signicantly correlated with the **'y'** variable, indicating sucess in the marketing campaign. 
+
+
+
+```{r echo=FALSE, Bivariate_Plots}
+
+ggplot(aes(x=age),data=data_big) +
+  geom_bar(stat="count", aes(fill=y), binwidth = 1) +
+  theme_bw() +
+  coord_cartesian(xlim = c(15,quantile(data_big$age,.99)))+
+  scale_x_continuous(breaks = seq(15,90,10))
+
+ggplot(aes(x=age),data=data_big) +
+  geom_bar(stat="count", aes(fill=y), binwidth = 1,position = "fill") +
+  theme_bw() +
+  coord_cartesian(xlim = c(15,quantile(data_big$age,.99)))+
+  scale_x_continuous(breaks = seq(15,90,10))
+```
+
+Variable age does seem to have a tendency regarding the Y variable. 
+However, when looking both plots one above the other on the same x axys, we can see that changes in Y proportion (sucess/failure) occurr also when the frequence count of the each age bin change (binwidth=1yr, ie ~100 observations for age 16, ~1750 observations for age 35  ). 
+
+> The more observation in any given bin, the less Y (sucess) proportion 
+
+Let's plot it in a classic boxplot
+ 
+```{r echo=FALSE}
+
+ggplot(aes(x=y,y=age),data=data_big)+
+  geom_boxplot(aes(fill=y))+ 
+  theme_bw()
+```
+Nothing catch our attention, execpt a larger IQR in the Yes (sucess) observation. Lets make use of the library GGally to plot the relations between variables, trying to always relate to the output variable Y.
+
+
+```{r echo=FALSE}
+data_small$y <- ordered(data_small$y, levels = c("yes","no"))
+theme_set(theme_minimal(20))
+set.seed(42)
+data_subset <- data_small[,c(1,2,21)]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("age", "job","y"))+
+  theme_bw()
+
+```
+
+
+```{r echo=FALSE}
+
+theme_set(theme_minimal(20))
+set.seed(43)
+data_subset <- data_small[,c(3,4,21)]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("marital", "education","y"))+
+  theme_bw()
+
+```
+
+
+```{r echo=FALSE}
+
+theme_set(theme_minimal(20))
+set.seed(44)
+data_subset <- data_small[,c(5,6,21)]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("default", "housing","y"))+
+  theme_bw()
+
+```
+
+```{r echo=FALSE}
+
+theme_set(theme_minimal(20))
+set.seed(44)
+data_subset <- data_small[,c(7,12,21)]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("loan", "campaign","y"))+
+  theme_bw()
+
+```
+
+```{r echo=FALSE}
+
+theme_set(theme_minimal(20))
+set.seed(44)
+data_subset <- data_small[,c(15,16,21)]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("poutcome", "emp.var.rate","y"))+
+  theme_bw()
+
+```
+
+
+```{r echo=FALSE}
+
+
+set.seed(44)
+data_subset <- data_small[,c(17,19,21)]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("cons.price.idx", "euribor3m","y"))+
+  theme_bw()
+
+```
+
+GGpairs is no magic so lets get deeper for the variables that have shown significant differences for the Y(sucess/failure) variable 
+
+
+```{r echo=FALSE}
+
+
+ggplot(aes(x=y,y=euribor3m),data=data_big)+
+  geom_boxplot(aes(fill = y))+
+  theme_bw()
+
+```
+
+Let's remember that variable distribution 
+
+```{r}
+ggplot(aes(x=euribor3m), data= data_big)+
+  geom_bar(aes(fill=y),binwidth = 1)+
+  theme_bw()
+
+ggplot(aes(x=euribor3m), data= data_big)+
+  geom_bar(aes(fill=y),binwidth = 1,position = "fill")+
+  theme_bw()
+
+```
+
+Ok so we seem to have something here. Let find out what Euribor is. And
+
+> Why is Euribor important?
+The Euribor rates are important because these rates provide the basis for the price or interest rate of all kinds of financial products, like interest rate swaps, interest rate futures, saving accounts (see: Euribor and savings) and mortgages. ([link](http://www.euribor-rates.eu/what-is-euribor.asp))
+
+So bank clients accept the deposit offer when Euribor rates are at their lowest (of the sample). That does't make sens from this point of view as we would suggest that higher Eribor rates > higher deposit returns. Further research is due to understand the correlation beetween variables. 
+
+We know want to digg deeper on the "campaign variable". Let's remeber it's meaning : 
+
+>   12 - campaign: number of contacts performed during this campaign and for this client (numeric, includes last contact)
+
+Intuitively, we would believe that more call increase the chance of sucess, as there is longuer time of marketing power to convince the client. Let's see. 
+
+```{r}
+
+ggplot(aes(x=campaign),data=data_big)+
+  geom_bar(aes(fill=y),binwidth = 1)+
+  scale_x_continuous(limits = c(0,30)) +
+  theme_bw()
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+ggplot(aes(x=campaign),data=data_big)+
+  geom_histogram(aes(fill=y),binwidth = 1,position = "fill")+
+  scale_x_continuous(limits = c(0,30)) +
+  theme_bw()
+```
+
+
+So we observe that there is a correlation (but negative one!), the more contact contact a client has the less he is willing to convert (Y variable value 'yes')
+
+# Bivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?
+
+### Did you observe any interesting relationships between the other features (not the main feature(s) of interest)?
+
+### What was the strongest relationship you found?
+
+
+
+
+# Multivariate Plots Section
+
+```{r echo=FALSE, Multivariate_Plots}
+
+```
+
+# Multivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the investigation. Were there features that strengthened each other in terms of looking at your feature(s) of interest?
+
+### Were there any interesting or surprising interactions between features?
+
+### OPTIONAL: Did you create any models with your dataset? Discuss the strengths and limitations of your model.
+
+------
+
+# Final Plots and Summary
+
+### Plot One
+```{r echo=FALSE, Plot_One}
+
+```
+
+### Description One
+
+
+### Plot Two
+```{r echo=FALSE, Plot_Two}
+
+```
+
+### Description Two
+
+
+### Plot Three
+```{r echo=FALSE, Plot_Three}
+
+```
+
+### Description Three
+
+------
+
+# Reflection
