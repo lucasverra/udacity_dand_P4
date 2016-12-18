@@ -26,6 +26,7 @@ library(ggplot2)
 library(knitr)
 library(gridExtra)
 library(GGally)
+library(dplyr)
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -189,6 +190,13 @@ grid.arrange(p_default,p_default_b,p_housing,p_housing_b,p_loan,p_loan_b, ncol=2
 ```
 
 
+```{r}
+data_big$hasloan <- ifelse(data_big$housing == 'yes' | data_big$loan == 'yes','yes','no/unknown'  )
+
+data_big$hasloan <- as.factor(data_big$hasloan)
+data_big$hasloan <- ordered(data_big$hasloan,levels = c('yes','no/unknown'))
+```
+
 #### Campaign Data 
 
 Variables in this section are categorical but also numerical.
@@ -339,7 +347,9 @@ We will investigate how success variable is related to those blocks, and if one 
 
 ### Did you create any new variables from existing variables in the dataset?
 
-No. We will discuss this matter on the reflections section. There is no evident new variable to be created exept maybe for an 'ID' type. As we saw on the distribution of the campaign variable , an event (a direct marketing contact) can ve executed on the same client multiple times. As there is no 'ID' variable, we cannot follow chrnonologically on a per client level.
+Yes, We created a new variable that 'merges' the information contained in housing and loan variables. The objective is to have one variable that aggregate the binari condition of having a loan.  
+The new variable is called 'hasloan'. Value 'yes' if housing == 'yes' OR loan == 'yes'
+
 
 ### Of the features you investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?
 
@@ -511,7 +521,54 @@ ggplot(aes(x=campaign),data=data_big)+
 ```
 
 
-So we observe that there is a correlation (but negative one!), the more contact contact a client has the less he is willing to convert (Y variable value 'yes')
+So we observe that there is a correlation (but negative one!), the more contacts (calls) a client has the less he is willing to convert (Y variable value 'yes')
+
+
+Now lets try to check if there is a relation between having a loan and subscribing to a term deposit : hasloan vs y variables
+
+```{r}
+ggplot(aes(x=hasloan),data=data_big)+
+  geom_bar(aes(fill=y))+
+  theme_bw()
+```
+
+It seems that not. We wish to show those percentages
+
+```{r}
+grp_hasloan_y <- data_big %>%
+  group_by (hasloan, y) %>%
+  summarise (n=n()) %>% 
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"), ypos = cumsum(n) - 0.5*n) #ypos is used to fix in the next plot the y position it will have arrange(rev(y)) plays an important role
+
+grp_hasloan_y
+
+```
+
+
+```{r}
+ggplot(data_big %>%
+  group_by (hasloan, y) %>%
+  summarise (n=n()) %>% arrange(rev(y)) %>%
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"), ypos = cumsum(n) - 0.5*n),  # Calculate label positions
+       aes(hasloan, n, fill=y)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=rel.freq, y=ypos)) +
+  theme_bw()
+
+```
+
+
+Since we have the information, we will check the relationship between job tittle and education. 
+
+```{r}
+data_big$education <- relevel(data_big$education, "illiterate")
+ggplot(aes(x=job),data=data_big)+
+  geom_bar(aes(fill=education)) + 
+  theme_bw() +
+  theme(axis.text.x=element_text(angle=30,hjust=1))
+
+
+```
 
 # Bivariate Analysis
 
