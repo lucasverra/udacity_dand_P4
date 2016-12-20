@@ -1,7 +1,7 @@
 - [How to order the (factor) variables in ggplot2](https://kohske.wordpress.com/2010/12/29/faq-how-to-order-the-factor-variables-in-ggplot2/)
 - [Log-transformation and its implications for data analysis](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/)
 
-Variable transformation 
+- [Variable transformation post created by me udacity forum](https://discussions.udacity.com/t/data-transformation-the-grandma-approach/203737)
 
 - [Forum_search](https://discussions.udacity.com/search?q=log%20transformation&expanded=true)
 - [Wiki for Data transformation](https://en.wikipedia.org/wiki/Data_transformation_(statistics)#Reasons_for_transforming_data)
