@@ -3,15 +3,15 @@
 
 Variable transformation 
 
-[Forum_search](https://discussions.udacity.com/search?q=log%20transformation&expanded=true)
-[Wiki for Data transformation](https://en.wikipedia.org/wiki/Data_transformation_(statistics)#Reasons_for_transforming_data)
-[Stack Exchange Stats, When (and why) should you take the log of a distribution (of numbers)?](http://stats.stackexchange.com/questions/18844/when-and-why-should-you-take-the-log-of-a-distribution-of-numbers)
+- [Forum_search](https://discussions.udacity.com/search?q=log%20transformation&expanded=true)
+- [Wiki for Data transformation](https://en.wikipedia.org/wiki/Data_transformation_(statistics)#Reasons_for_transforming_data)
+- [Stack Exchange Stats, When (and why) should you take the log of a distribution (of numbers)?](http://stats.stackexchange.com/questions/18844/when-and-why-should-you-take-the-log-of-a-distribution-of-numbers)
 
-[ggplot: arranging boxplots of multiple y-variables for each group of a continuous x](http://stackoverflow.com/questions/21388845/ggplot-arranging-boxplots-of-multiple-y-variables-for-each-group-of-a-continuou)
+- [ggplot: arranging boxplots of multiple y-variables for each group of a continuous x](http://stackoverflow.com/questions/21388845/ggplot-arranging-boxplots-of-multiple-y-variables-for-each-group-of-a-continuou)
 
-[What is Euribor](http://www.euribor-rates.eu/what-is-euribor.asp)
+-[What is Euribor](http://www.euribor-rates.eu/what-is-euribor.asp\)
 
-[plot categorical vs categorical](https://www.linkedin.com/pulse/exploratory-plots-categorical-vs-variables-r-yogesh-kauntia)
-[grid with shared legend](https://rpubs.com/sjackman/grid_arrange_shared_legend)
-[groupby, levels, summarize, pell of and bla bla bla](http://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr)
-[show % in bar](http://stackoverflow.com/questions/37817809/r-ggplot-stacked-bar-chart-with-counts-on-y-axis-but-percentage-as-label?rq=1ß)
+- [plot categorical vs categorical](https://www.linkedin.com/pulse/exploratory-plots-categorical-vs-variables-r-yogesh-kauntia)
+- [grid with shared legend](https://rpubs.com/sjackman/grid_arrange_shared_legend)
+- [groupby, levels, summarize, pell of and bla bla bla](http://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr)
+- [show % in bar](http://stackoverflow.com/questions/37817809/r-ggplot-stacked-bar-chart-with-counts-on-y-axis-but-percentage-as-label?rq=1ß)
