@@ -15,3 +15,4 @@ Variable transformation
 - [grid with shared legend](https://rpubs.com/sjackman/grid_arrange_shared_legend)
 - [groupby, levels, summarize, pell of and bla bla bla](http://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr)
 - [show % in bar](http://stackoverflow.com/questions/37817809/r-ggplot-stacked-bar-chart-with-counts-on-y-axis-but-percentage-as-label?rq=1ß)
+- [ggplot + scale_size_area , how show proportions from another cat variable](http://stackoverflow.com/questions/41241963/ggplot-scale-size-area-how-show-proportions-from-another-cat-variable/41243893?noredirect=1#comment69692047_41243893)
