@@ -9,7 +9,7 @@
 
 - [ggplot: arranging boxplots of multiple y-variables for each group of a continuous x](http://stackoverflow.com/questions/21388845/ggplot-arranging-boxplots-of-multiple-y-variables-for-each-group-of-a-continuou)
 
-- [What is Euribor](http://www.euribor-rates.eu/what-is-euribor.asp\)
+- [What is Euribor](http://www.euribor-rates.eu/what-is-euribor.asp)
 
 - [plot categorical vs categorical](https://www.linkedin.com/pulse/exploratory-plots-categorical-vs-variables-r-yogesh-kauntia)
 - [grid with shared legend](https://rpubs.com/sjackman/grid_arrange_shared_legend)
