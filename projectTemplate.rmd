@@ -7,7 +7,8 @@ output: html_document
 
 
 ```{r include=F}
-knitr::opts_chunk$set(echo=FALSE,fig.width=8, fig.height=4,fig.align='center',message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=FALSE,fig.width=8, fig.height=4,
+fig.align='center',message=FALSE, warning=FALSE)
 ```
 
 Exploratory Data Analysis on direct marketing campaign from Portuguese Bank 
@@ -101,6 +102,9 @@ ggplot(aes(x=y),data=data_big)+
   theme_bw()
 ```
 
+<center><span style="color:#e74c3c">Success rate is ~12% of the total observations</span></center>
+
+
 #### Client Data  
 
 We can quickly see that the Client data aspect of the data set is predominantly based on factor type of variables, except for the 'age' variable.
@@ -124,6 +128,8 @@ p_age_b = ggplot(aes(x=age,y=..count../sum(..count..)),data=data_big)+
 grid.arrange( p_age,p_age_b, ncol=2)
 ```
 
+<center><span style="color:#e74c3c">80% of observations are between 27 and 57 years old \n </span></center>
+
 ```{r}
 data_big$marital <- ordered(data_big$marital, levels = c("single","married",'divorced','unknown'))
 
@@ -138,7 +144,7 @@ p_marit_b = ggplot(aes(x=marital,y=..count../sum(..count..)),data=data_big)+
 grid.arrange( p_marit,p_marit_b, ncol=2)
 ```
 
-
+<center><span style="color:#e74c3c">60% of observations are married \n </span></center>
 
 ```{r}
 p_edu = ggplot(aes(x=education),data=data_big) +
@@ -189,7 +195,7 @@ p_loan_b = ggplot(aes(x=loan,y=..count../sum(..count..)),data=data_big)+
 
 grid.arrange(p_default,p_default_b,p_housing,p_housing_b,p_loan,p_loan_b, ncol=2)
 ```
-
+<center><span style="color:#e74c3c">'hasloan' variable is created in order to combine housing and loan data \n </span></center>
 
 ```{r}
 data_big$hasloan <- ifelse(data_big$housing == 'yes' | data_big$loan == 'yes','yes','no/unknown'  )
@@ -202,8 +208,6 @@ data_big$hasloan <- ordered(data_big$hasloan,levels = c('yes','no/unknown'))
 
 Variables in this section are categorical but also numerical.
 
-
-
 ```{r,fig.height=10}
 p_contact = ggplot(aes(x=contact),data=data_big)+
   geom_bar(stat="count",fill='#A38F84') +
@@ -213,7 +217,8 @@ p_contact_b = ggplot(aes(x=contact,y=..count../sum(..count..)),data=data_big)+
   geom_bar(stat="count",fill='#A38F84') +
   theme_bw()
 
-data_big$month <- ordered(data_big$month, levels = c("mar",'apr','may','jun','jul','aug','sep','oct','nov','dic'))
+data_big$month <- ordered(data_big$month,
+  levels = c("mar",'apr','may','jun','jul','aug','sep','oct','nov','dic'))
 
 p_month = ggplot(aes(x=month),data=data_big)+
   geom_bar(stat="count",fill='#A38F84') +
@@ -223,13 +228,15 @@ p_month_b = ggplot(aes(x=month,y=..count../sum(..count..)),data=data_big)+
   geom_bar(stat="count",fill='#A38F84') +
   theme_bw()
 
-data_big$day_of_week <- ordered(data_big$day_of_week, levels = c("mon",'tue','wed','thu','fri'))
+data_big$day_of_week <- ordered(data_big$day_of_week,
+  levels = c("mon",'tue','wed','thu','fri'))
 
 p_day_of_week = ggplot(aes(x=day_of_week),data=data_big)+
   geom_bar(stat="count",fill='#A38F84') +
   theme_bw()
 
-p_day_of_week_b = ggplot(aes(x=day_of_week,y=..count../sum(..count..)),data=data_big)+
+p_day_of_week_b = ggplot(aes(x=day_of_week,y=..count../sum(..count..)),
+  data=data_big)+
   geom_bar(stat="count",fill='#A38F84') +
   theme_bw()
 
@@ -244,8 +251,10 @@ p_pdays_b = ggplot(aes(x=pdays,y=..count../sum(..count..)),data=data_big)+
    theme_bw()
 
 
-grid.arrange(p_contact,p_contact_b,p_month,p_month_b,p_day_of_week,p_day_of_week_b,p_pdays,p_pdays_b, ncol=2)
+grid.arrange(p_contact,p_contact_b,p_month,p_month_b,
+  p_day_of_week,p_day_of_week_b,p_pdays,p_pdays_b, ncol=2)
 ```
+<center><span style="color:#e74c3c">'pdays' data is unusable, as the value 999 was used instead of N/A. \n We observe variability in the months variable although none in the day of week. This is due probably to a stronger launch than consequent following  \n </span></center>
 
 The following plot represent the campaign variable, described as  
 
@@ -255,13 +264,11 @@ The following plot represent the campaign variable, described as
 
 
 ggplot(aes(x=campaign),data= data_big) + 
-  geom_bar(,fill='#A38F84') +
+  geom_bar(fill='#A38F84') +
   scale_x_continuous(limits = c(0,20), breaks = seq(0,20,2))+
   theme_bw()
 
 ```
-
-
 
 ```{r echo=FALSE}
 
@@ -274,8 +281,8 @@ ggplot(aes(x=duration),data= data_big) +
 
 ```
 
+<center><span style="color:#e74c3c">Both distribution are heavily skewed towards the low values\n </span></center>
 
-Both distribution are heavily skewed towards the low values
 
 #### Macro social and economic portuguese context data 
 
@@ -286,7 +293,8 @@ p_em_rate <- ggplot(aes(x=emp.var.rate),data= data_big) +
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
-p_em_rate_b <- ggplot(aes(x=emp.var.rate,y=..count../sum(..count..)),data= data_big) + 
+p_em_rate_b <- ggplot(aes(x=emp.var.rate,y=..count../sum(..count..)),
+  data= data_big) + 
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
@@ -296,7 +304,8 @@ p_price_index <- ggplot(aes(x=cons.price.idx),data= data_big) +
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
-p_price_index_b <- ggplot(aes(x=cons.price.idx,y=..count../sum(..count..)),data= data_big) + 
+p_price_index_b <- ggplot(aes(x=cons.price.idx,y=..count../sum(..count..)),
+  data= data_big) + 
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
@@ -306,7 +315,8 @@ p_cons_conf <- ggplot(aes(x=cons.conf.idx),data= data_big) +
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
-p_cons_conf_b <- ggplot(aes(x=cons.conf.idx,y=..count../sum(..count..)),data= data_big) + 
+p_cons_conf_b <- ggplot(aes(x=cons.conf.idx,y=..count../sum(..count..)),
+  data= data_big) + 
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
@@ -330,10 +340,11 @@ p_emplo_b <- ggplot(aes(x=nr.employed,y=..count../sum(..count..)),data= data_big
   geom_histogram(fill='#FAC51C') + 
   theme_bw()
 
-grid.arrange(p_em_rate,p_em_rate_b,p_price_index,p_price_index_b,p_cons_conf,p_cons_conf_b,p_euribor3m,p_euribor3m_b,p_emplo,p_emplo_b, ncol=2)
+grid.arrange(p_em_rate,p_em_rate_b,p_price_index,p_price_index_b,p_cons_conf,
+  p_cons_conf_b,p_euribor3m,p_euribor3m_b,p_emplo,p_emplo_b, ncol=2)
 
 ```
-
+<center><span style="color:#e74c3c"> Indeed we confirm that non regularity of the socio-economic variables </span></center>
 
 ```{r echo=FALSE }
 str(data_big)
@@ -367,14 +378,17 @@ The new variable is called 'hasloan'. Value 'yes' if housing == 'yes' OR loan ==
 Yes, as seen previously, the Macro socio-economic block of data has a rather unusual distribution. I did not perform any operation on these variables as I have no experience dealing with this type of data. Nothing seems to point to a corrupted/flawed data input.
 
 Regarding the duration variable, we can apply the log transformation in order to make it as normal as possible.
-Although after lots of reading, i still do not understand why i do this
+Although after lots of reading, and still not understanding it completely, we created a [blog post](https://discussions.udacity.com/t/data-transformation-the-grandma-approach/203737)  that helped a lot. In it, we understood that the log transformation, besides making the plot look better, helps making a future linear regression model more performance. 
 
 ```{r echo=FALSE}
 
 
-ggplot(aes(x=log(duration)),data= data_big) + 
-  geom_histogram(fill='#A38F84') + 
-  theme_bw()
+ggplot(aes(x=duration),data= data_big) + 
+  geom_histogram(fill='#A38F84') +
+  scale_x_log10(breaks = c(0,10,30,60,100,120,150,300,450,600,1000,1200))+
+  #scale_x_continuous()
+  theme_bw() +
+  theme(axis.text.x=element_text(angle=30,hjust=1))
 
 ```
 
@@ -396,17 +410,20 @@ ggplot(aes(x=age),data=data_big) +
   geom_bar(stat="count", aes(fill=y), binwidth = 1) +
   theme_bw() +
   coord_cartesian(xlim = c(15,quantile(data_big$age,.99)))+
-  scale_x_continuous(breaks = seq(15,90,10))
+  scale_x_continuous(breaks = seq(15,90,10))+
+  guides(fill=guide_legend(title='Success'))
+
 
 ggplot(aes(x=age),data=data_big) +
   geom_bar(stat="count", aes(fill=y), binwidth = 1,position = "fill") +
   theme_bw() +
   coord_cartesian(xlim = c(15,quantile(data_big$age,.99)))+
-  scale_x_continuous(breaks = seq(15,90,10))
+  scale_x_continuous(breaks = seq(15,90,10))+
+  guides(fill=guide_legend(title='Success'))
 ```
 
 Variable age does seem to have a tendency regarding the Y variable. 
-However, when looking both plots one above the other on the same x axes, we can see that changes in Y proportion (success/failure) occur also when the frequency count of the each age bin change (bin width=1yr, ie ~100 observations for age 16, ~1750 observations for age 35  ). 
+However, when looking both plots one above the other on the same x axes, we can see that changes in Y proportion (success/failure) occur also when the frequency count of the each age bin change (bin width=1yr, IE ~100 observations for age 16, ~1750 observations for age 35  ). 
 
 > The more observation in any given bin, the less Y (sucess) proportion 
 
@@ -416,7 +433,8 @@ Let's plot it in a classic box plot
 
 ggplot(aes(x=y,y=age),data=data_big)+
   geom_boxplot(aes(fill=y))+ 
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 ```
 Nothing catch our attention, except a larger IQR in the Yes (success) observation. Lets make use of the library GGally to plot the relations between variables, trying to always relate to the output variable Y.
 
@@ -425,7 +443,7 @@ Nothing catch our attention, except a larger IQR in the Yes (success) observatio
 data_small$y <- ordered(data_small$y, levels = c("yes","no"))
 theme_set(theme_minimal(20))
 set.seed(42)
-data_subset <- data_small[,c(1,2,21)]
+data_subset <- data_small[,c('age','job','y')]
 ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("age", "job","y"))+
   theme_bw()
 
@@ -436,7 +454,7 @@ ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = 
 
 theme_set(theme_minimal(20))
 set.seed(43)
-data_subset <- data_small[,c(3,4,21)]
+data_subset <- data_small[,c('marital','education','y')]
 ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("marital", "education","y"))+
   theme_bw()
 
@@ -447,7 +465,7 @@ ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = 
 
 theme_set(theme_minimal(20))
 set.seed(44)
-data_subset <- data_small[,c(5,6,21)]
+data_subset <- data_small[,c('default','housing','y')]
 ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("default", "housing","y"))+
   theme_bw()
 
@@ -457,8 +475,9 @@ ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = 
 
 theme_set(theme_minimal(20))
 set.seed(44)
-data_subset <- data_small[,c(7,12,21)]
-ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("loan", "campaign","y"))+
+data_subset <- data_small[,c('loan','campaign','y')]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y),
+  columns = c("loan", "campaign","y"))+
   theme_bw()
 
 ```
@@ -467,8 +486,9 @@ ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = 
 
 theme_set(theme_minimal(20))
 set.seed(44)
-data_subset <- data_small[,c(15,16,21)]
-ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("poutcome", "emp.var.rate","y"))+
+data_subset <- data_small[,c('poutcome','emp.var.rate','y')]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y),
+  columns = c("poutcome", "emp.var.rate","y"))+
   theme_bw()
 
 ```
@@ -478,17 +498,15 @@ ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = 
 
 
 set.seed(44)
-data_subset <- data_small[,c(17,19,21)]
-ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y), columns = c("cons.price.idx", "euribor3m","y"))+
+data_subset <- data_small[,c('cons.price.idx','euribor3m','y')]
+ggpairs(data_subset[sample.int(nrow(data_subset),4000),], mapping = aes(color = y),
+  columns = c("cons.price.idx", "euribor3m","y"))+
   theme_bw()
 
 ```
 
-GGpairs is no magic so lets get deeper for the variables that have shown significant differences for the Y(success/failure) variable 
-
-
-
-
+GGpairs is no magic. After the creation of the matrices, little is uncover really. Maybe it is because of the categorical nature of the y variable ?  We've purposely reduce the combinations possible to avoid having a 21x21 unreadable matrix. 
+Lets get deeper for the variables that have shown significant differences for the Y(success/failure) variable.
 
 #### 'Macro social and economic portuguese context data' vs y : ex euribor3m
 
@@ -498,7 +516,8 @@ GGpairs is no magic so lets get deeper for the variables that have shown signifi
 
 ggplot(aes(x=y,y=euribor3m),data=data_big)+
   geom_boxplot(aes(fill = y))+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 ```
 
@@ -506,7 +525,8 @@ We can observe definitely a difference on the mean of each group.
 
 ```{r}
 
- meds<- data_big %>% select(y,euribor3m) %>% group_by(y) %>% summarise(n=n(),median_euri=median(euribor3m))
+meds<- data_big %>% select(y,euribor3m) %>% group_by(y) %>% summarise(n=n(),
+  median_euri=median(euribor3m))
 
 meds$median_euri
 
@@ -529,12 +549,14 @@ Let's remember that variable distribution
 ```{r}
 ggplot(aes(x=euribor3m), data= data_big)+
   geom_bar(aes(fill=y),binwidth = 1)+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 ggplot(aes(x=euribor3m), data= data_big)+
   geom_bar(aes(fill=y),binwidth = 1,position = "fill")+
   theme_bw()+
-  labs(y='Sucess rate per euribor3m level')
+  labs(y='Sucess rate per euribor3m level')+
+  guides(fill=guide_legend(title='Success'))
 
 ```
 
@@ -543,7 +565,7 @@ OK so we seem to have something here. Let find out what Euribor is.
 > Why is Euribor important?
 The Euribor rates are important because these rates provide the basis for the price or interest rate of all kinds of financial products, like interest rate swaps, interest rate futures, saving accounts (see: Euribor and savings) and mortgages. ([link](http://www.euribor-rates.eu/what-is-euribor.asp))
 
-So bank clients accept the deposit offer when Euribor rates are at their lowest (of the sample). That doesn't make sens from this point of view as we would suggest that higher Eribor rates > higher deposit returns. Further research is due to understand the correlation between variables.   
+So bank clients accept the deposit offer when Euribor rates are at their lowest (of the sample). That doesn't make sens from this point of view as we would suggest that higher Euribor rates > higher deposit returns. Further research is due to understand the correlation between variables.   
   
   
 Is this finding applicable to all macro economic variables in this data set ? 
@@ -568,19 +590,23 @@ grid_arrange_shared_legend <- function(...) {
 
 p1 <- ggplot(aes(x=y,y=emp.var.rate),data=data_big)+
   geom_boxplot(aes(fill = y))+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 p2 <- ggplot(aes(x=y,y=cons.price.idx),data=data_big)+
   geom_boxplot(aes(fill = y))+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 p3 <- ggplot(aes(x=y,y=cons.conf.idx),data=data_big)+
   geom_boxplot(aes(fill = y))+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 p4 <- ggplot(aes(x=y,y=nr.employed),data=data_big)+
   geom_boxplot(aes(fill = y))+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 grid_arrange_shared_legend(p1, p2, p3, p4)
 #grid.arrange(p1,p2,p3,p4,ncol=2)
@@ -601,7 +627,8 @@ Intuitively, we would believe that an increment in the number of calls increase 
 ggplot(aes(x=campaign),data=data_big)+
   geom_bar(aes(fill=y),binwidth = 1)+
   scale_x_continuous(limits = c(0,30)) +
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 ```
 
 ```{r echo=FALSE,message=FALSE, warning=FALSE}
@@ -609,7 +636,8 @@ ggplot(aes(x=campaign),data=data_big)+
   geom_histogram(aes(fill=y),binwidth = 1,position = "fill")+
   scale_x_continuous(limits = c(0,30)) +
   theme_bw()+
-  labs(y="Sucess rates per bin", x='campaign (bin=1)')
+  labs(y="Sucess rates per bin", x='campaign (bin=1)')+
+  guides(fill=guide_legend(title='Success'))
 ```
 
 
@@ -625,7 +653,8 @@ ggplot(aes(x=duration),data=data_big)+
   geom_bar(aes(fill=y),binwidth = 15)+
   scale_x_continuous(limits = c(0,1300),breaks = seq(0,1300,60)) +
   theme_bw()+
-  theme(axis.text.x=element_text(angle=45,hjust=1))
+  theme(axis.text.x=element_text(angle=45,hjust=1))+
+  guides(fill=guide_legend(title='Success'))
 ```
 
 ```{r echo=FALSE,message=FALSE, warning=FALSE}
@@ -634,16 +663,17 @@ ggplot(aes(x=duration),data=data_big)+
   scale_x_continuous(limits = c(0,1300),breaks = seq(0,1300,60)) +
   theme_bw()+
   theme(axis.text.x=element_text(angle=45,hjust=1))+
-  labs(y="Sucess rates per bin", x='duration (s) (bin= 15s)')
+  labs(y="Sucess rates per bin", x='duration (s) (bin= 15s)')+
+  guides(fill=guide_legend(title='Success'))
 ```
 
-So we find a clear tendency of improving success rates whit increments in the duration of the call. As we are warned, there is no much use of this insight as is because duration is a value known AFTER the call is ended. so no prodiction can be done based only in this parameter. 
+So we find a clear tendency of improving success rates whit increments in the duration of the call. As we are warned, there is no much use of this insight as is because duration is a value known AFTER the call is ended. so no prediction can be done based only in this parameter. 
 
 
 #### Hasloan vs y
 
 Now lets try to check if there is a relation between having a loan and subscribing to a term deposit : hasloan vs y variables. 
-Remember, hasloan is a variable created in the univariate analysis. It combines the info of
+Remember, hasloan is a variable created in the uni variate analysis. It combines the info of
 
 > 6 - housing: has housing loan? (categorical: “no”,“yes”,“unknown”)  
 > 7 - loan: has personal loan? (categorical: “no”,“yes”,“unknown”)
@@ -653,7 +683,8 @@ Remember, hasloan is a variable created in the univariate analysis. It combines 
 ```{r}
 ggplot(aes(x=hasloan),data=data_big)+
   geom_bar(aes(fill=y))+
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 ```
 
 It seems that not. We wish to show those percentages
@@ -662,7 +693,9 @@ It seems that not. We wish to show those percentages
 grp_hasloan_y <- data_big %>%
   group_by (hasloan, y) %>%
   summarise (n=n()) %>% 
-  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"), ypos = cumsum(n) - 0.5*n) #ypos is used to fix in the next plot the y position it will have arrange(rev(y)) plays an important role
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"), ypos = cumsum(n) - 0.5*n)
+#ypos is used to fix in the next plot the y position
+#it will have arrange(rev(y)) plays an important role
 
 select(grp_hasloan_y,hasloan,y,n,rel.freq)
 
@@ -673,11 +706,13 @@ select(grp_hasloan_y,hasloan,y,n,rel.freq)
 ggplot(data_big %>%
   group_by (hasloan, y) %>%
   summarise (n=n()) %>% arrange(rev(y)) %>%
-  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"), ypos = cumsum(n) - 0.5*n),  # Calculate label positions
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"), ypos = cumsum(n) - 0.5*n),
+  # Calculate label positions
        aes(hasloan, n, fill=y)) +
   geom_bar(stat="identity") +
   geom_text(aes(label=rel.freq, y=ypos)) +
-  theme_bw()
+  theme_bw()+
+  guides(fill=guide_legend(title='Success'))
 
 ```
 
@@ -730,7 +765,9 @@ We wanted to see if marital situation has an impact on having a housing loan (fi
 ```{r}
 
 
-ggplot(data_big %>% filter(housing!='unknown')%>% group_by(housing,marital) %>% summarise(n=n()) %>%  arrange(rev(marital)) %>% mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"),ypos=cumsum(n) - 0.5*n),
+ggplot(data_big %>% filter(housing!='unknown')%>% group_by(housing,marital) %>%
+  summarise(n=n()) %>%  arrange(rev(marital)) %>%
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 1), "%"),ypos=cumsum(n) - 0.5*n),
        aes(housing, n, fill=marital)) +
   geom_bar(stat="identity") +
   geom_text(aes(label=rel.freq, y=ypos),size=3) +
@@ -779,8 +816,11 @@ Further analysis with an expert in those variables is due.
 
 
 ```{r, include=F}
-#with this DF, we can see how many different 'profiles' (which are a combination of variables values) there is. We can see 13K profiles / 40K observations
-data_big %>% group_by(age,job,marital,education,default,housing,loan) %>% summarise(n=n())
+#with this DF, we can see how many different 'profiles' 
+#(which are a combination of variables values) there is.
+#We can see 13K profiles / 40K observations
+data_big %>% group_by(age,job,marital,education,default,housing,loan) %>%
+  summarise(n=n())
 
 ```
 
@@ -806,7 +846,8 @@ There is also the y vs duration relationship. but we are warned that it is not u
 #### Duration vs Euribor3m vs y
 
 ```{r}
-print(paste0('We will categorize the Euribor3m variable and make use of the bucket with >100 count to facet the plot'))
+print(paste0('We will categorize the Euribor3m variable and 
+#make use of the bucket with >100 count to facet the plot'))
 
 data_big$euribor.bucket <- cut(data_big$euribor3m, breaks = c(0,1,2,3,4,5,6))
 table(data_big$euribor.bucket)
@@ -815,25 +856,29 @@ table(data_big$euribor.bucket)
 
 ```{r echo=FALSE, Multivariate_Plots,fig.width=6}
 
-ggplot(aes(x=duration),data=subset(data_big,euribor.bucket!='(3,4]' & euribor.bucket!='(5,6]' )) + 
+ggplot(aes(x=duration),data=subset(data_big,
+  euribor.bucket!='(3,4]' & euribor.bucket!='(5,6]' )) + 
   geom_histogram(aes(fill = y)) +
   facet_wrap(~euribor.bucket,ncol=1) +
   scale_y_log10()+
   scale_x_log10(limits=c(10,3000)) + 
   theme_bw()+
-  labs(y='log10 count',x='log10 duration')
+  labs(y='log10 count',x='log10 duration')+
+  guides(fill=guide_legend(title='Success'))
 
 
-ggplot(aes(x=duration),data=subset(data_big,euribor.bucket!='(3,4]' & euribor.bucket!='(5,6]' )) + 
+ggplot(aes(x=duration),data=subset(data_big,
+  euribor.bucket!='(3,4]' & euribor.bucket!='(5,6]' )) + 
   geom_histogram(aes(fill = y),position='fill') +
   facet_wrap(~euribor.bucket,ncol=1) +
   #scale_y_log10()+
   scale_x_log10(limits=c(10,3000)) + 
   theme_bw()+
-  labs(y='Y variable success rate')
+  labs(y='Y variable success rate')+
+  guides(fill=guide_legend(title='Success'))
 ```
 
-We confirm that Euribor3m has an effect on conversion as presented on bivariate analysis.  
+We confirm that Euribor3m has an effect on conversion as presented on bi variate analysis.  
 
 #### Education vs Age vs y 
 
@@ -844,7 +889,8 @@ ggplot(aes(x=age),data=subset(data_big,education!='illiterate')) +
   facet_wrap(~education,ncol=2) +
   scale_x_continuous(limits = c(15,quantile(data_big$age,.99))) +
   theme_bw()+
-  labs(y='Y variable success rate',x='age')
+  labs(y='Y variable success rate',x='age')+
+  guides(fill=guide_legend(title='Success'))
 
 ```
 
@@ -889,24 +935,28 @@ Second iteration :
 We want to add the y variable information , so we need to create the information in order to be plotted
 
 ```{r}
-data_sum <- data_big %>% group_by(job,education,y) %>% summarise(n=n()) %>% mutate(rel.freq  = round(100 * n/sum(n), 2),total_obs = sum(n))
+data_sum <- data_big %>% group_by(job,education,y) %>% summarise(n=n()) %>%
+  mutate(rel.freq_sucess  = round(100 * n/sum(n), 2),total_obs = sum(n))
 data_sum
 ```
 
-We need to remove one line of Y variable for each [Job_Education], luckily as y is binary, we can remove (and plot) just one line. Subset is in the order 
+Rel.freq is the proportion of success of the y variable for each [Job_Education] combination.
+We need to remove one line of Y variable for each [Job_Education], luckily as y is binary, we can remove (and plot) just one line. Subset to remove the y=='no' is in the order as following
 
 
 ```{r echo=TRUE, eval=FALSE}
-ggplot(data=subset(data_sum,data_sum$y=='yes'&data_sum$education!='illiterate'&data_sum$total_obs>100), aes(job, education))
+ggplot(data=subset(data_sum,data_sum$y=='yes'&
+  data_sum$education!='illiterate'&data_sum$total_obs>100), aes(job, education))
 ```
 
 ```{r, fig.height=5}
 
 
-ggplot(data=subset(data_sum,data_sum$y=='yes'&data_sum$education!='illiterate'&data_sum$total_obs>100), aes(job, education))+
-  geom_point(aes(size = total_obs, fill = rel.freq),shape = 21)+
+ggplot(data=subset(data_sum,data_sum$y=='yes'&
+  data_sum$education!='illiterate'&data_sum$total_obs>100), aes(job, education))+
+  geom_point(aes(size = total_obs, fill = rel.freq_sucess),shape = 21)+
   scale_size_area(max_size = 12)+
-  scale_fill_distiller(palette = "RdBu", name = "Rel.Freq",limits = c(0,40)) +
+  scale_fill_distiller(palette = "RdBu", name = "Rel.Freq for success",limits = c(0,40)) +
   theme_bw()+
   theme(axis.text.x=element_text(angle=45,hjust=1))
 
@@ -921,7 +971,8 @@ The color palette shows the %rate for success ( variable y == yes)
 
 ```{r,include=F}
 
-data_sum <- data_big %>% group_by(job,marital,y) %>% summarise(n=n()) %>% mutate(rel.freq  = round(100 * n/sum(n), 2),total_obs = sum(n))
+data_sum <- data_big %>% group_by(job,marital,y) %>% summarise(n=n()) %>% 
+  mutate(rel.freq  = round(100 * n/sum(n), 2),total_obs = sum(n))
 data_sum
 
 ```
@@ -931,7 +982,7 @@ data_sum
 ggplot(data=subset(data_sum,data_sum$y=='yes'&data_sum$total_obs>100), aes(job, marital))+
   geom_point(aes(size = total_obs, fill = rel.freq),shape = 21)+
   scale_size_area(max_size = 12)+
-  scale_fill_distiller(palette = "RdBu", name = "Rel.Freq",limits = c(0,40)) +
+  scale_fill_distiller(palette = "RdBu", name = "Rel.Freq for success",limits = c(0,40)) +
   theme_bw()+
   theme(axis.text.x=element_text(angle=45,hjust=1))
 
@@ -954,14 +1005,14 @@ In this section we compared different combination of variables
 - Job vs Education vs y
 - Job vs Marital vs y
 
-No new combination of variables showed pivotal information for the analysis, besides what we already knew form bivariate section. 
+No new combination of variables showed pivotal information for the analysis, besides what we already knew form bi variate section. 
 
 > The main variables to infer sucess/failure of the marketing campaign are the MacroEconomic (ex Euribor3m) or Duration 
 
 
 ### Were there any interesting or surprising interactions between features?
 
-We did observe that client in the job category [student,retired] to have more appetite for the product. This is similar to our findings in our first bivarial analysis (age vs y). What's interesting in this plot ( variable vs job vs y) is that we can observe similar sized group (ex : [retired + married] vs [entrepreneur + married ]) but the success rate does indeed change positively towards extreme ages (retired+students). 
+We did observe that client in the job category [student,retired] to have more appetite for the product. This is similar to our findings in our first arrival analysis (age vs y). What's interesting in this plot ( variable vs job vs y) is that we can observe similar sized group (ex : [retired + married] vs [entrepreneur + married ]) but the success rate does indeed change positively towards extreme ages (retired+students). 
 There is then another proof that age does influence success of the campaign
 
 ------
@@ -979,7 +1030,8 @@ ggplot(aes(x=age),data=data_big) +
   scale_y_continuous(breaks = seq(0,1,0.20))+
   scale_x_continuous(breaks = seq(0,80,5))+
   scale_fill_manual(values=alpha(c("#27ae60", "#ecf0f1"),.85))+ 
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))+
+  guides(fill=guide_legend(title='Success'))
 
 
 
@@ -994,35 +1046,42 @@ The concave curve could have been shown with other type of geom (maybe geom_poly
 ### Plot Two
 ```{r echo=FALSE,fig.width=7,fig.height=7, Plot_Two}
 
-ggplot(aes(x=duration),data=subset(data_big,euribor.bucket!='(3,4]' & euribor.bucket!='(5,6]' )) + 
+ggplot(aes(x=duration),data=subset(data_big,euribor.bucket!='(3,4]' &
+  euribor.bucket!='(5,6]' )) + 
   geom_histogram(aes(fill = y)) +
   facet_wrap(~euribor.bucket,ncol=1) +
-  scale_y_log10(breaks=c(1,1000,100000),labels=c(1,1000,100000))+
-  scale_x_log10(limits=c(10,3000)) + 
+  scale_y_log10(breaks=c(1,1000,10000,50000),labels=c(1,1000,10000,50000))+
+  scale_x_log10(limits=c(10,3000), breaks = c(10,60,120,180,360,600,1500,3000)) + 
   theme_light()+
-  labs(y='Count on log10 scale',x='Duration',title='Differences in sucess by duration \n and Euribor3m level')+
+  labs(y='Count on log10 scale',x='Duration',title='Differences in sucess 
+  by duration \n and Euribor3m level')+
   scale_fill_manual(values=alpha(c("#27ae60", "#ecf0f1"),.85))+ 
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))+
+  guides(fill=guide_legend(title='Success'))
 
 ```
 
 ### Description Two
 
 We chose this plot because it's when we started to feel comfortable with the exploration. Ggplot library was starting ti become an ally instead of a headache. 
-Hear, we decided to convert Euribor3m variable into a categorical one, ordered in order to use it as a facet. We choose ncol = 1 in order to have each level in the same shared x=axis. We made use of transformations for the x & y variables, in order to uncover the findings : Euribor3m and duration had an effect on success
+Hear, we decided to convert Euribor3m variable into a categorical one, ordered in order to use it as a facet. We choose ncol = 1 in order to have each level in the same shared x axis. We made use of transformations for the x & y variables, in order to uncover the findings : Euribor3m and duration had a positive effect on success. 
+As we can observe when fixing duration (thus looking at the facets by Euribor3m), the proportion of success is higher on the first level. 
+Furthermore, when fixing Euribor3m (thus looking at the one of the above 3 plots), proportion of success is higher when duration (of the contact call) is extended. 
 
 ### Plot Three
 ```{r echo=FALSE, Plot_Three}
-data_sum <- data_big %>% group_by(job,education,y) %>% summarise(n=n()) %>% mutate(rel.freq  = round(100 * n/sum(n), 2),total_obs = sum(n))
+data_sum <- data_big %>% group_by(job,education,y) %>% summarise(n=n()) %>% 
+  mutate(rel.freq  = round(100 * n/sum(n), 2),total_obs = sum(n))
 data_sum
 
 ```
 
 ```{r}
-ggplot(data=subset(data_sum,data_sum$y=='yes'&data_sum$education!='illiterate'&data_sum$total_obs>100), aes(job, education))+
+ggplot(data=subset(data_sum,data_sum$y=='yes'&data_sum$education!='illiterate'&
+  data_sum$total_obs>100), aes(job, education))+
   geom_point(aes(size = total_obs, fill = rel.freq),shape = 21,stroke = 0.1)+
   scale_size_area(max_size = 12)+
-  scale_fill_distiller(palette = "RdBu", name = "Rel.Freq",limits = c(0,40)) +
+  scale_fill_distiller(palette = "RdBu", name = "Rel.Freq \nfor success",limits = c(0,40)) +
   theme_minimal()+
   theme(axis.text.x=element_text(angle=45,hjust=1))+ 
   labs(title='Age does count : \n Scaterplot Job vs Education \n sized by count & colored by sucess ')+
@@ -1033,7 +1092,7 @@ ggplot(data=subset(data_sum,data_sum$y=='yes'&data_sum$education!='illiterate'&d
 ### Description Three
 
 In this plot, we managed to produce exactly what was in mind. We had to create a group by Data Frame, and the subset it in order to get the Rel.freq information. 
-In this plot we show that age (expressed by jobs student & retired) indeed have an impact on the success of the campaign. 
+In this plot we show that age (expressed by jobs : student & retired) indeed have an impact on the success of the campaign. We can see that for those 2 categories of jobs, success rate is higher. 
 
 ------
 
@@ -1041,7 +1100,7 @@ In this plot we show that age (expressed by jobs student & retired) indeed have 
 
 This project was very challenging, on so many levels. 
 
-- Data source : After searching for data in another category (turism transportation), we realized the scarcity of clean and 'ready-to-use' data sets. We had to abandon quickly the idea in order to get to work. [Kaggle Datasets](https://www.kaggle.com/datasets) is an invaluable asset.
+- Data source : After searching for data in another category (tourism transportation), we realized the scarcity of clean and 'ready-to-use' data sets. We had to abandon quickly the idea in order to get to work. [Kaggle Datasets](https://www.kaggle.com/datasets) is an invaluable asset.
 
 - Once we choose this marketing data set, the first mayor difference with the Udacity's lessons was the lack of meaningful continuous variables. All the value is in categorical variables and the plotting that results lacks of the 'cool' factor that continuous vs continuous plotting have. 
 
