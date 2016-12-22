@@ -1111,3 +1111,18 @@ This project was very challenging, on so many levels.
 - On the positive note, we felt intrigued by behaviors observed in the data set (Euribor3m vs y). We conclude that input from professional on other areas (like macro economics in this case) is necessary to unveil more information. 
 
 Overall, this project felt like a real challenge and we learned tons from it. Now, machine learning!!!
+
+References :  
+- [How to order the (factor) variables in ggplot2](https://kohske.wordpress.com/2010/12/29/faq-how-to-order-the-factor-variables-in-ggplot2/)  
+- [Log-transformation and its implications for data analysis](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/)  
+- [Variable transformation post created by me udacity forum](https://discussions.udacity.com/t/data-transformation-the-grandma-approach/203737)  
+- [Forum_search](https://discussions.udacity.com/search?q=log%20transformation&expanded=true)  
+- [Wiki for Data transformation](https://en.wikipedia.org/wiki/Data_transformation_(statistics)#Reasons_for_transforming_data)  
+- [Stack Exchange Stats, When (and why) should you take the log of a distribution (of numbers)?](http://stats.stackexchange.com/questions/18844/when-and-why-should-you-take-the-log-of-a-distribution-of-numbers)  
+- [ggplot: arranging boxplots of multiple y-variables for each group of a continuous x](http://stackoverflow.com/questions/21388845/ggplot-arranging-boxplots-of-multiple-y-variables-for-each-group-of-a-continuou)  
+- [What is Euribor](http://www.euribor-rates.eu/what-is-euribor.asp)  
+- [plot categorical vs categorical](https://www.linkedin.com/pulse/exploratory-plots-categorical-vs-variables-r-yogesh-kauntia)  
+- [grid with shared legend](https://rpubs.com/sjackman/grid_arrange_shared_legend)  
+- [groupby, levels, summarize](http://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr)  
+- [show % in bar](http://stackoverflow.com/questions/37817809/r-ggplot-stacked-bar-chart-with-counts-on-y-axis-but-percentage-as-label?rq=1ß)  
+- [ggplot + scale_size_area , how show proportions from another cat variable](http://stackoverflow.com/questions/41241963/ggplot-scale-size-area-how-show-proportions-from-another-cat-variable/41243893?noredirect=1#comment69692047_41243893)
